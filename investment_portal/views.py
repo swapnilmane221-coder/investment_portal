@@ -14,6 +14,9 @@ def home(request):
 def signup(request):
      return render(request,'reg.html')
   
+def profile(request):
+     return render(request,'profile.html')
+
 def main(request):
      if request.method == 'POST':
           name=request.POST.get('name')
@@ -24,3 +27,10 @@ def main(request):
           return HttpResponse('login successfully')
      return render(request,'home.html')
 
+def login(request):
+     if request.method == 'POST':
+          email=request.POST.get('email')
+          user = userdata.objects.filter(email=email)
+          if user[0].password == request.POST.get('password'):
+               return HttpResponse('login successfully')
+     return render(request,'home.html')
