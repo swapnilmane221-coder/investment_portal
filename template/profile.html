@@ -96,7 +96,7 @@
                     <div class="card--header">
                         <div class="amount">
                             <span class="title">
-                                Completed Investment
+                                Current Investment
                             </span>
                             <span class="amount--value">{{completed_inv}}</span>
                         </div>
@@ -109,7 +109,7 @@
                     <div class="card--header">
                         <div class="amount">
                             <span class="title">
-                                Pending Stock price
+                                sell Stock price
                             </span>
                             <span class="amount--value">{{pending_inv}}</span>
                         </div>
@@ -141,7 +141,7 @@
                             <td>{{i.name}}</td>
                             <td>{{i.amount}}</td>
                             <td>{{i.quantity}}</td>
-                            <td>{{i.status}}</td>
+                            <td>on {{i.status}}</td>
                             <td>{{i.total_amount}}</td>
                         </tr>
                         {% endfor %}

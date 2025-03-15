@@ -19,7 +19,7 @@ def profile(request):
      total=0
      pending_inv=0
      for i in stocktransdata:
-          if i.status == 'pending':
+          if i.status == 'sell':
                pending_inv+=i.total_amount
           total+=i.total_amount
      completed_inv=total-pending_inv
