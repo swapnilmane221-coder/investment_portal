@@ -80,110 +80,82 @@
                     <div class="card--header">
                         <div class="amount">
                             <span class="title">
-                                Payment amount
+                                Total Investment
                             </span>
-                            <span class="amount--value">£500.00</span>
+                            <span class="amount--value">{{total}}</span>
                         </div>
-                        <i class="fas fa-pound-sign icon"></i>
+                        <i class="fas fa-rupee-sign"></i>
+
                     </div>
-                    <span class="card--detail">**** **** **** 3484</span>
+                    
                 </div>
 
-                <div class="payment--card light--purple">
-                    <div class="card--header">
-                        <div class="amount">
-                            <span class="title">
-                                Payment order
-                            </span>
-                            <span class="amount--value">£200.00</span>
-                        </div>
-                        <i class="fas fa-list icon dark--purple"></i>
-                    </div>
-                    <span class="card--detail">**** **** **** 5542</span>
-                </div>
+                
 
                 <div class="payment--card light--green">
                     <div class="card--header">
                         <div class="amount">
                             <span class="title">
-                                Payment customer
+                                Completed Investment
                             </span>
-                            <span class="amount--value">£350.00</span>
+                            <span class="amount--value">{{completed_inv}}</span>
                         </div>
                         <i class="fas fa-users icon dark--green"></i>
                     </div>
-                    <span class="card--detail">**** **** **** 8896</span>
+                    
                 </div>
 
                 <div class="payment--card light--blue">
                     <div class="card--header">
                         <div class="amount">
                             <span class="title">
-                                Payment proceed
+                                Pending Stock price
                             </span>
-                            <span class="amount--value">£150.00</span>
+                            <span class="amount--value">{{pending_inv}}</span>
                         </div>
                         <i class="fa-solid fa-check icon dark--blue"></i>
-                    </div>
-                    <span class="card--detail">**** **** **** 7745</span>
-                </div>
+                    
             </div>
         </div>
 
         <div class="tabular--wrapper">
-            <h3 class="main--title">Finance data</h3>
+            <h3 class="main--title"> transaction details</h3>
             <div class="table--container">
                 <table>
                     <thead>
                         <tr>
                             <th>Date</th>
-                            <th>Transaction Type</th>
-                            <th>Description</th>
-                            <th>Amount</th>
-                            <th>Category</th>
+                            <th>stock Name</th>
+                            <th>Amount per stock</th>
+                            <th>Quantity</th>
                             <th>Status</th>
-                            <th>Action</th>
+                            <th>Total amount</th>
                         </tr>
                     </thead>
 
                     <tbody>
+                        {% if stocktransdata %}
+                        {% for i in stocktransdata %}
                         <tr>
-                            <td>
-                                2023-01-05
-                            </td>
-                            <td>Expenses</td>
-                            <td>Office Supplies</td>
-                            <td>£250</td>
-                            <td>Office Expenses</td>
-                            <td>Pending</td>
-                            <td><button>Edit</button></td>
+                            <td>{{i.Date}}</td>
+                            <td>{{i.name}}</td>
+                            <td>{{i.amount}}</td>
+                            <td>{{i.quantity}}</td>
+                            <td>{{i.status}}</td>
+                            <td>{{i.total_amount}}</td>
                         </tr>
+                        {% endfor %}
+                        {% else %}
                         <tr>
-                            <td>
-                                2023-02-05
-                            </td>
-                            <td>Income</td>
-                            <td>Client Payment</td>
-                            <td>£500</td>
-                            <td>Sales</td>
-                            <td>Completed</td>
-                            <td><button>Edit</button></td>
+                            <td colspan="6">No transaction Done</tdco>
+
                         </tr>
-                        <tr>
-                            <td>
-                                2023-03-05
-                            </td>
-                            <td>Expenses</td>
-                            <td>Travel Expenses</td>
-                            <td>£250</td>
-                            <td>Travel</td>
-                            <td>Pending</td>
-                            <td><button>Edit</button></td>
-                        </tr>
+                        {% endif %}
+                        
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="7">Total: £1,000</td>
+                            <td colspan="6">Total: {{total}}</td>
                         </tr>
                     </tfoot>
                 </table>

@@ -2,7 +2,7 @@ from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render
 from userdata.models import userdata
 from django.views.decorators.csrf import csrf_protect
-
+from stock.models import transactionhistory
 
 
 def base(request):
@@ -15,7 +15,18 @@ def signup(request):
      return render(request,'reg.html')
   
 def profile(request):
-     return render(request,'profile.html')
+     stocktransdata=transactionhistory.objects.all()
+     total=0
+     pending_inv=0
+     for i in stocktransdata:
+          if i.status == 'pending':
+               pending_inv+=i.total_amount
+          total+=i.total_amount
+     completed_inv=total-pending_inv
+     data={'total':total,'stocktransdata':stocktransdata,'pending_inv':pending_inv,'completed_inv':completed_inv}
+
+
+     return render(request,'profile.html',data)
 
 def main(request):
      if request.method == 'POST':
