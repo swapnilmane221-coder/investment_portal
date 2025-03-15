@@ -13,7 +13,7 @@ def home(request):
 
 def signup(request):
      return render(request,'reg.html')
-
+  
 def main(request):
      if request.method == 'POST':
           name=request.POST.get('name')
@@ -23,4 +23,4 @@ def main(request):
           data.save()
           return HttpResponse('login successfully')
      return render(request,'home.html')
-          
+

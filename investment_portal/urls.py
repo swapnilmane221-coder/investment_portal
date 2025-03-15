@@ -5,8 +5,8 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('base/',views.base),
-    path('',views.home),
+    path('/',views.home),
+    path('home/',views.home),
     path('signup/',views.signup),
     path('main/',views.main,name='main')
 ]
