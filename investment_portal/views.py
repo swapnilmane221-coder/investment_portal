@@ -24,7 +24,7 @@ def main(request):
           password=request.POST.get('password')
           data=userdata(name=name,email=email,password=password)
           data.save()
-          return HttpResponse('login successfully')
+          return HttpResponse('profile')
      return render(request,'home.html')
 
 def login(request):
@@ -32,5 +32,5 @@ def login(request):
           email=request.POST.get('email')
           user = userdata.objects.filter(email=email)
           if user[0].password == request.POST.get('password'):
-               return HttpResponse('login successfully')
+               return HttpResponseRedirect('profile')
      return render(request,'home.html')

@@ -7,7 +7,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.home),
     path('home/',views.home),
-    path('signup/',views.signup),
-    path("profile/",views.profile),
-    path('main/',views.main,name='main')
+    path('signup/',views.signup,name='signup'),
+    path("profile/",views.profile,name='profile'),
+    path('main/',views.main,name='main'),
+    path('login/',views.login,name='login'),
 ]
