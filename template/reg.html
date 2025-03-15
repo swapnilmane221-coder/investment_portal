@@ -8,7 +8,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="/static/JS/reg.js" defer></script>
     <style>
-        #btn{
+        .btn{
             border-radius: 20px;
             border: 1px solid #3B82F6;
             background-color: #3B82F6;
@@ -40,11 +40,12 @@
                 <input type="text" placeholder="Name" name="name" />
                 <input type="email" placeholder="Email" name="email"/>
                 <input type="password" placeholder="Password" name="password"/>
-                <input id="btn" type="submit" value="Sign Up">
+                <input class="btn" type="submit" value="Sign Up">
             </form>
         </div>
         <div class="form-container sign-in-container">
             <form action="{% url 'login' %}" method="POST">
+                {% csrf_token %}
                 <h1>Sign in</h1>
                 <div class="social-container">
                     <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
@@ -55,7 +56,7 @@
                 <input type="email" placeholder="Email" name="email" />
                 <input type="password" placeholder="Password" name="password" />
                 <a href="#">Forgot your password?</a>
-                <button href="#">Sign In</button>
+                <input class="btn" type="submit" value="Sign In">
             </form>
         </div>
         <div class="overlay-container">
