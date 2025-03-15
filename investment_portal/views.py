@@ -9,3 +9,6 @@ def home(request):
 
 def signup(request):
      return render(request,'reg.html')
+
+def profile(request):
+     return render(request,'profile.html')
