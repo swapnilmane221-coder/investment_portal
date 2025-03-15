@@ -6,3 +6,6 @@ def base(request):
 
 def home(request):
      return render(request,'home.html')
+
+def signup(request):
+     return render(request,'reg.html')
