@@ -1,71 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-     <meta charset="UTF-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>StockSpy</title>
-     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-     <link rel="stylesheet" href="/static/css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InvestPro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const navbar = document.getElementById("navbar");
+            window.addEventListener("scroll", function() {
+                if (window.scrollY > 20) {
+                    navbar.classList.add("bg-gray-900/95", "shadow-lg");
+                } else {
+                    navbar.classList.remove("bg-gray-900/95", "shadow-lg");
+                }
+            });
+        });
+    </script>
 </head>
-<body>
-     <header>
-      <nav class="navBar">
-        <div class="main">
-      
-              <div class="logo"></div>
-    
-              <div class="webname label1">
-                <h1>StockSpy</h1>
-
+<body class="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white">
+    <!-- Navbar -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-transparent">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex items-center justify-between h-16">
+              <div class="flex items-center">
+                  <span class="text-xl font-bold">StockSpy</span>
               </div>
-              <div class="home navl {% if request.path == '/' %}active{% endif %}">
-                <a href="/">Home</a>
+              <div class="hidden md:flex items-center space-x-8">
+                  <a href="#" class="text-gray-300 hover:text-white">Home</a>
+                  <a href="#" class="text-gray-300 hover:text-white">Markets</a>
+                  <a href="#" class="text-gray-300 hover:text-white">Analysis</a>
+                  <a href="#" class="text-gray-300 hover:text-white">Portfolio</a>
+                  <button class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-full text-white">Sign In</button>
               </div>
-              <div class="stock navl {% if request.path == '/stock' %}active{% endif %}">
-                <a href="">Stocks</a>
-              </div>          
-              
-              <div class="insurance navl {% if request.path == '/insurance' %}active{% endif %}">
-                <a href="">insurance</a>
-              </div>
-      
-              <div class="bonds navl {% if request.path == '/bonds' %}active{% endif %}">
-                <a href="">Bonds</a>
-              </div>
-            
-          
-              <form action="">
-                <input type="search" name="serch" id="search" placeholder="Search ">
-                <input type="submit" value="Search">
-              </form>
-      
-              <button class="loginbtn">Login/Sign up</button>
-            
-          
-        </div>
-      </nav>
-     </header>
-
-
-     <main>
-      
-      {% block content %}
-        
-      {% endblock content %}
-        
-     </main>
-     <footer>
-      <div class="footer">
-        <table>
-          <th>About Us</th>
-          <th>Contact us</th>
-          <th>Privacy Policy</th>
-          <th>Terms & Conditions</th>
-          <tr></tr>
-          <td>© 2023 StockSpy</td>
-        </table>
-
+          </div>
       </div>
-     </footer>
-</body>
-</html>
+  </nav>
+    {% block content %}
+
+    {% endblock %}
+    
+        <!-- Testimonials Section -->
+        <div class="bg-gray-850 py-16">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 class="text-3xl font-semibold text-center text-white mb-12">Trusted by Industry Leaders</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+              
+              <!-- Testimonial Card 1 -->
+              <div class="bg-gray-850 p-6 rounded-lg shadow-lg transition-all transform hover:scale-105 hover:shadow-2xl">
+              <div class="flex items-center mb-4">
+                  <svg class="w-8 h-8 text-blue-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12" y2="16"></line>
+                  </svg>
+                  <div class="ml-4">
+                  <h4 class="text-lg font-semibold text-white">Sarah Johnson</h4>
+                  <p class="text-sm text-gray-500">Investment Analyst</p>
+                  </div>
+              </div>
+              <p class="text-gray-500">"The most comprehensive investment analysis platform I've used. The real-time insights are game-changing."</p>
+              </div>
+              
+              <!-- Testimonial Card 2 -->
+              <div class="bg-gray-850 p-6 rounded-lg shadow-lg transition-all transform hover:scale-105 hover:shadow-2xl">
+              <div class="flex items-center mb-4">
+                  <svg class="w-8 h-8 text-blue-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12" y2="16"></line>
+                  </svg>
+                  <div class="ml-4">
+                  <h4 class="text-lg font-semibold text-white">Michael Chen</h4>
+                  <p class="text-sm text-gray-500">Portfolio Manager</p>
+                  </div>
+              </div>
+              <p class="text-gray-500">"Exceptional risk management tools. This platform has transformed how we approach investment decisions."</p>
+              </div>
+      
+          </div>  
+      </div>  
+  </body>
+  </html>
+  
