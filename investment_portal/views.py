@@ -111,3 +111,12 @@ def stock_view(request):
 
 def chatbot(request):
      return render(request,'chatbot.html')
+
+def analysis(request):
+     return render(request,'analysis.html')
+
+def market(request):
+     return render(request,'market.html')
+
+def buystock(request):
+     return render(request,'buystock.html')

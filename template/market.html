@@ -1,1 +1,116 @@
-{}
+{% extends 'base.html' %}
+
+{% block content %}
+
+<body class="bg-gray-100 text-gray-900 flex items-center justify-center min-h-screen">
+
+    <div class="max-w-6xl mx-auto my-10 p-6 bg-white rounded-lg shadow-md transition-transform duration-300 hover:scale-105">
+        <!-- Header Section -->
+        <div class="text-center mb-6">
+            <h1 class="text-3xl font-bold text-blue-600 animate-fadeIn">Live Stock Prices</h1>
+            <p class="text-gray-600">Real-time stock market updates</p>
+        </div>
+
+        <!-- Stock Table -->
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+                <thead class="bg-blue-600 text-white">
+                    <tr>
+                        <th class="py-3 px-4 text-left">Stock Symbol</th>
+                        <th class="py-3 px-4 text-left">Latest Price</th>
+                        <th class="py-3 px-4 text-left">Change</th>
+                        <th class="py-3 px-4 text-left">Change %</th>
+                        <th class="py-3 px-4 text-left">Open</th>
+                        <th class="py-3 px-4 text-left">High</th>
+                        <th class="py-3 px-4 text-left">Low</th>
+                        <th class="py-3 px-4 text-left">Volume</th>
+                    </tr>
+                </thead>
+                <tbody id="stockList" class="divide-y divide-gray-200">
+                    <tr class="animate-pulse">
+                        <td colspan="8" class="text-center py-4 text-gray-500">Loading stock data...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const stockList = document.getElementById("stockList");
+            const apiKey = "NDPQJZH4PBJDP33Z";
+            const stockSymbols = ['AAPL', 'GOOGL', 'MSFT', 'AMZN', 'TSLA', 'NFLX', 'META', 'NVDA', 'AMD', 'SPY', 
+            'BA', 'INTC', 'GS', 'IBM', 'DIS', 'T', 'V', 'WMT', 'PYPL', 'BABA', 'UBER', 'SQ', 
+            'RBLX', 'TWTR', 'VZ', 'KO', 'PFE', 'JNJ', 'XOM', 'CVX', 'CSCO', 'NKE', 'INTU', 'CVS'];
+
+            async function fetchStockData(symbol) {
+                const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${apiKey}`;
+                try {
+                    const response = await fetch(url);
+                    const data = await response.json();
+                    if (data["Global Quote"]) {
+                        return {
+                            symbol: symbol,
+                            price: data["Global Quote"]["05. price"] || "N/A",
+                            change: data["Global Quote"]["09. change"] || "N/A",
+                            changePercent: data["Global Quote"]["10. change percent"] || "N/A",
+                            open: data["Global Quote"]["02. open"] || "N/A",
+                            high: data["Global Quote"]["03. high"] || "N/A",
+                            low: data["Global Quote"]["04. low"] || "N/A",
+                            volume: data["Global Quote"]["06. volume"] || "N/A"
+                        };
+                    } else {
+                        return { symbol, price: "N/A", change: "N/A", changePercent: "N/A", open: "N/A", high: "N/A", low: "N/A", volume: "N/A" };
+                    }
+                } catch (error) {
+                    console.error("Error fetching data:", error);
+                    return { symbol, price: "Error", change: "Error", changePercent: "Error", open: "Error", high: "Error", low: "Error", volume: "Error" };
+                }
+            }
+
+            async function loadStocks() {
+                stockList.innerHTML = `<tr class="animate-pulse">
+                    <td colspan='8' class="text-center py-4 text-gray-500">Fetching stock data...</td>
+                </tr>`;
+
+                // Simulate a 2-second delay before fetching stock data
+                await new Promise(resolve => setTimeout(resolve, 2000));
+
+                const stockData = await Promise.all(stockSymbols.map(fetchStockData));
+
+                stockList.innerHTML = stockData.map(stock => {
+                    const changeValue = parseFloat(stock.change);
+                    const changeIcon = changeValue > 0 ? `<i class="fas fa-arrow-up text-green-500"></i>` : `<i class="fas fa-arrow-down text-red-500"></i>`;
+
+                    return `
+                        <tr class="opacity-0 animate-fadeIn hover:bg-gray-100 transition-all">
+                            <td class="py-3 px-4">${stock.symbol}</td>
+                            <td class="py-3 px-4">$${stock.price}</td>
+                            <td class="py-3 px-4">${stock.change} ${changeIcon}</td>
+                            <td class="py-3 px-4">${stock.changePercent} ${changeIcon}</td>
+                            <td class="py-3 px-4">$${stock.open}</td>
+                            <td class="py-3 px-4">$${stock.high}</td>
+                            <td class="py-3 px-4">$${stock.low}</td>
+                            <td class="py-3 px-4">${stock.volume}</td>
+                        </tr>
+                    `;
+                }).join("");
+            }
+
+            loadStocks();
+        });
+    </script>
+
+    <!-- Tailwind Animations -->
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn {
+            animation: fadeIn 0.8s ease-in-out forwards;
+        }
+    </style>
+
+</body>
+{% endblock %}

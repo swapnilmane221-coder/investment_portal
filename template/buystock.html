@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Market List</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Add CSS for modal and tables */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+            max-width: 500px;
+            border-radius: 10px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        .positive {
+            color: green;
+        }
+
+        .negative {
+            color: red;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        .buyBtn {
+            padding: 5px 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .buyBtn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+  {% include 'sidebar.html' %}
+
+    <!-- Main Content -->
+    <div class="main--content">
+        <div class="header--wrapper">
+            <div class="header--title">
+                <span>Market Data</span>
+                <h2>Stock List</h2>
+            </div>
+        </div>
+
+        <div class="tabular--wrapper">
+            <h3 class="main--title">Live Stock Prices</h3>
+            <div class="table--container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Stock Symbol</th>
+                            <th>Latest Price</th>
+                            <th>Change</th>
+                            <th>Change %</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stockList">
+                        <tr>
+                            <td colspan="5">Loading stock data...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Portfolio Section -->
+        <div class="tabular--wrapper">
+            <h3 class="main--title">Your Portfolio</h3>
+            <div class="table--container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Stock Symbol</th>
+                            <th>Quantity</th>
+                            <th>Purchase Price</th>
+                            <th>Current Price</th>
+                            <th>Total Value</th>
+                        </tr>
+                    </thead>
+                    <tbody id="portfolioList">
+                        <tr>
+                            <td colspan="5">No stocks purchased yet.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Buy Stock Modal -->
+    <div id="buyStockModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Buy Stock</h2>
+            <form id="buyStockForm">
+                <label for="symbol">Stock Symbol:</label>
+                <input type="text" id="symbol" name="symbol" readonly><br><br>
+                <label for="price">Price per Share:</label>
+                <input type="number" id="price" name="price" readonly><br><br>
+                <label for="quantity">Quantity:</label>
+                <input type="number" id="quantity" name="quantity" required><br><br>
+                <button type="submit">Buy</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Sample user data
+        let user = {
+            balance: 10000.0, // Starting balance
+            portfolio: [], // Array to store purchased stocks
+        };
+
+        // Sample stock data (replace with real API data)
+        const stocks = [
+            { symbol: 'AAPL', price: 150.25, change: 1.25, changePercent: 0.84 },
+            { symbol: 'GOOGL', price: 2800.50, change: -5.75, changePercent: -0.21 },
+            { symbol: 'TSLA', price: 750.00, change: 10.00, changePercent: 1.35 },
+        ];
+
+        // Load stock data into the table
+        function loadStockData() {
+            const stockList = document.getElementById('stockList');
+            stockList.innerHTML = ''; // Clear loading message
+
+            stocks.forEach(stock => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${stock.symbol}</td>
+                    <td>$${stock.price.toFixed(2)}</td>
+                    <td class="${stock.change >= 0 ? 'positive' : 'negative'}">${stock.change.toFixed(2)}</td>
+                    <td class="${stock.changePercent >= 0 ? 'positive' : 'negative'}">${stock.changePercent.toFixed(2)}%</td>
+                    <td><button class="buyBtn" data-symbol="${stock.symbol}" data-price="${stock.price}">Buy</button></td>
+                `;
+                stockList.appendChild(row);
+            });
+
+            // Add event listeners to Buy buttons
+            document.querySelectorAll('.buyBtn').forEach(button => {
+                button.addEventListener('click', openBuyModal);
+            });
+        }
+
+        // Open Buy Stock Modal
+        function openBuyModal(event) {
+            const modal = document.getElementById('buyStockModal');
+            const symbolInput = document.getElementById('symbol');
+            const priceInput = document.getElementById('price');
+
+            // Set stock symbol and price in the form
+            symbolInput.value = event.target.dataset.symbol;
+            priceInput.value = event.target.dataset.price;
+
+            // Display the modal
+            modal.style.display = 'block';
+
+            // Close modal when clicking the close button
+            document.querySelector('.close').addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+
+            // Close modal when clicking outside the modal
+            window.addEventListener('click', (event) => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+
+        // Handle Buy Stock Form Submission
+        document.getElementById('buyStockForm').addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const symbol = document.getElementById('symbol').value;
+            const price = parseFloat(document.getElementById('price').value);
+            const quantity = parseInt(document.getElementById('quantity').value);
+
+            if (quantity <= 0) {
+                alert('Please enter a valid quantity.');
+                return;
+            }
+
+            const totalCost = price * quantity;
+
+            if (user.balance < totalCost) {
+                alert('Insufficient balance to complete the purchase.');
+                return;
+            }
+
+            // Deduct cost from user balance
+            user.balance -= totalCost;
+
+            // Add stock to user's portfolio
+            const existingStock = user.portfolio.find(stock => stock.symbol === symbol);
+            if (existingStock) {
+                existingStock.quantity += quantity;
+            } else {
+                user.portfolio.push({ symbol, price, quantity });
+            }
+
+            // Update UI
+            updatePortfolio();
+            alert(`You bought ${quantity} shares of ${symbol} for $${totalCost.toFixed(2)}.`);
+            document.getElementById('buyStockModal').style.display = 'none';
+        });
+
+        // Update Portfolio Table
+        function updatePortfolio() {
+            const portfolioList = document.getElementById('portfolioList');
+            portfolioList.innerHTML = ''; // Clear existing rows
+
+            if (user.portfolio.length === 0) {
+                portfolioList.innerHTML = '<tr><td colspan="5">No stocks purchased yet.</td></tr>';
+                return;
+            }
+
+            user.portfolio.forEach(stock => {
+                const currentStock = stocks.find(s => s.symbol === stock.symbol);
+                const currentPrice = currentStock ? currentStock.price : stock.price;
+                const totalValue = currentPrice * stock.quantity;
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${stock.symbol}</td>
+                    <td>${stock.quantity}</td>
+                    <td>$${stock.price.toFixed(2)}</td>
+                    <td>$${currentPrice.toFixed(2)}</td>
+                    <td>$${totalValue.toFixed(2)}</td>
+                `;
+                portfolioList.appendChild(row);
+            });
+        }
+
+        // Simulate Real-Time Stock Price Updates
+        function simulatePriceUpdates() {
+            setInterval(() => {
+                stocks.forEach(stock => {
+                    const change = (Math.random() - 0.5) * 10; // Random price change
+                    stock.price += change;
+                    stock.price = Math.max(stock.price, 0); // Ensure price doesn't go negative
+                });
+                loadStockData(); // Refresh stock table
+                updatePortfolio(); // Refresh portfolio table
+            }, 5000); // Update every 5 seconds
+        }
+
+        // Load stock data and portfolio when the page loads
+        window.onload = () => {
+            loadStockData();
+            updatePortfolio();
+            simulatePriceUpdates();
+        };
+    </script>
+</body>
+
+</html>
