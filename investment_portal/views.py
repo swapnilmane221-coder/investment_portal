@@ -6,6 +6,32 @@ from stock.models import transactionhistory
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import requests
+import razorpay
+from django.conf import settings
+import json
+
+# Initialize Razorpay client
+razorpay_client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+
+@csrf_exempt
+def create_order(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            amount = data.get("amount")  # Amount in paise (1 INR = 100 paise)
+
+            # Create order
+            razorpay_order = razorpay_client.order.create({
+                "amount": amount,  # Amount should be in the smallest currency unit (paise)
+                "currency": "INR",
+                "payment_capture": 1  # Auto capture payment
+            })
+
+            return JsonResponse({"id": razorpay_order["id"], "amount": razorpay_order["amount"], "currency": "INR"})
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)
+
+    return JsonResponse({"error": "Invalid request"}, status=400)
 
 id=userdata.objects.get(email='sahil09@gmail.com').id
 
@@ -17,27 +43,6 @@ def get_insurance_data(request):
     response = requests.get(api_url)
     data = response.json() if response.status_code == 200 else []
     return JsonResponse(data, safe=False)
-
-# from .chatbot_assistant import ChatbotAssistant, get_stocks  # Import your chatbot class
-
-# # Load chatbot model
-# assistant = ChatbotAssistant('intents.json', function_mappings={'stocks': get_stocks})
-# assistant.parse_intents()
-# assistant.load_model('chatbot_model.pth', 'dimensions.json')
-# from google import genai
-
-
-
-# def chatbot_response(request):
-#     if request.method == "POST":
-#         userinput = request.POST.get('userInput')
-#         client = genai.Client(api_key="AIzaSyBfPOZ7vl3kKsIdxM5p89tZpQS6we8vQ6E")
-#         response = client.models.generate_content(
-#         model="gemini-2.0-flash", contents=userinput
-#      )
-#         message = response.text
-#         return render(request, 'profile.html', {'message': message})
-#     return JsonResponse({"error": "Invalid request"}, status=400)
 
 def home(request):
      return render(request,'home.html')

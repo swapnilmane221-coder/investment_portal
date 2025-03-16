@@ -20,4 +20,5 @@ urlpatterns = [
     path('bonds/',views.bonds,name='bonds'),
     path('stock_view',views.stock_view,name='stock_view'),
     path('chatbot',views.chatbot,name='chatbot'),
+    path("create-order", views.create_order, name="create_order"),
 ]
