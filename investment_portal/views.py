@@ -94,3 +94,15 @@ def userprofile(request):
 
 def stocks(request):
      return render(request,'stocks.html')
+
+def freq(request):
+     return render(request,'freq.html')
+
+def bonds(request):
+     return render(request,'bonds.html')
+
+def stock_view(request):
+     return render(request,'stock_view.html')
+
+def chatbot(request):
+     return render(request,'chatbot.html')

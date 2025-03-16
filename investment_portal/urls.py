@@ -16,4 +16,8 @@ urlpatterns = [
     path('stocks/',views.stocks,name='stocks'),
     path('insurance/', views.insurance, name='insurance'),
     path('api/data/', get_insurance_data, name='get_insurance_data'),
+    path('freq/',views.freq,name='freq'),
+    path('bonds/',views.bonds,name='bonds'),
+    path('stock_view',views.stock_view,name='stock_view'),
+    path('chatbot',views.chatbot,name='chatbot'),
 ]

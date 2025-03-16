@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StockSpy</title>
-    <link rel="stylesheet" href="/static/css/stock.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="/static/JS/stocks.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -257,59 +256,7 @@
             </div>
         </div>
 
-        <!-- Chatbot -->
-        <!-- <div id="chatbot">
-            <div id="chatbox">
-                <div id="messages"></div>
-                <input type="text" id="userInput" name="userInput" placeholder="Type your message..." />
-                <button onclick="sendMessage()">Send</button>
-            </div>
-        </div> -->
 
-    </div>
-<!-- 
-    <script>
-        async function sendMessage() {
-            let inputField = document.getElementById("userInput");
-            let userMessage = inputField.value.trim();
-            if (!userMessage) return;
-
-            let messageContainer = document.getElementById("messages");
-            messageContainer.innerHTML += `<div class="user-msg">${userMessage}</div>`;
-
-            try {
-                let response = await fetch("/chatbot/", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json", "X-CSRFToken": getCookie("csrftoken") },
-                    body: JSON.stringify({ message: userMessage })
-                });
-
-                let data = await response.json();
-                messageContainer.innerHTML += `<div class="bot-msg">${data.response}</div>`;
-            } catch (error) {
-                messageContainer.innerHTML += `<div class="bot-msg error">Error fetching response.</div>`;
-            }
-
-            inputField.value = "";
-        }
-
-        function getCookie(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== "") {
-                let cookies = document.cookie.split(";");
-                for (let i = 0; i < cookies.length; i++) {
-                    let cookie = cookies[i].trim();
-                    if (cookie.startsWith(name + "=")) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
-        }
-    </script> -->
-
-    <!-- <style>
         #chatbot {
             position: fixed;
             bottom: 20px;

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock FAQs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #003366;
+        }
+        .faq {
+            margin-bottom: 20px;
+        }
+        .question {
+            font-weight: bold;
+            color: #004080;
+        }
+        .answer {
+            margin-left: 20px;
+            color: #333;
+        }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    {% include 'sidebar.html' %}
+
+    <div class="m-4 bg-white rounded-lg shadow-md p-4">
+    <h1 class="text-2xl font-bold mb-4">Frequently Asked Questions about Stock</h1>
+    
+    <div class="faq">
+        <div class="question">1. What is a stock?</div>
+        <div class="answer">A stock represents ownership in a company. When you buy a stock, you own a portion of the company, called shares.</div>
+    </div>
+    
+    <div class="faq">
+        <div class="question">2. How do I buy stocks?</div>
+        <div class="answer">You can buy stocks through a brokerage account, either online or with the help of a broker. Some apps also allow stock trading.</div>
+    </div>
+    
+    <div class="faq">
+        <div class="question">3. What is the stock market?</div>
+        <div class="answer">The stock market is a platform where stocks are bought and sold. Major stock markets include the NYSE and NASDAQ.</div>
+    </div>
+    
+    <div class="faq">
+        <div class="question">4. What affects stock prices?</div>
+        <div class="answer">Stock prices are affected by factors like company performance, market trends, economic conditions, and investor sentiment.</div>
+    </div>
+    
+    <div class="faq">
+        <div class="question">5. What are dividends?</div>
+        <div class="answer">Dividends are payments made by a company to its shareholders, usually from profits. Not all companies pay dividends.</div>
+    </div>
+    </div>
+</body>
+</html>
