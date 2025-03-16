@@ -3,10 +3,20 @@ from django.shortcuts import render
 from userdata.models import userdata
 from django.views.decorators.csrf import csrf_protect
 from stock.models import transactionhistory
-# import json
-# import torch
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+import requests
+
+id=userdata.objects.get(email='sahil09@gmail.com').id
+
+def insurance(request):
+    return render(request, "insurance.html")
+
+def get_insurance_data(request):
+    api_url = "https://api.example.com/insurance/list?token=dYkhLKCmzrr1SPSb2dwtUE8AHUDdE4Cr"
+    response = requests.get(api_url)
+    data = response.json() if response.status_code == 200 else []
+    return JsonResponse(data, safe=False)
 
 # from .chatbot_assistant import ChatbotAssistant, get_stocks  # Import your chatbot class
 
@@ -67,6 +77,7 @@ def login(request):
                user = userdata.objects.filter(email=email)
                if user[0].password == request.POST.get('password'):
                     msg=None
+                    id=userdata.objects.get(email=email).id
                else:
                     msg='Invalid Credentials'
           except:
@@ -78,7 +89,8 @@ def login(request):
      return render(request,'reg.html')
 
 def userprofile(request):
-     return render(request,'userpro.html')
+     name=userdata.objects.get(id=id).name
+     return render(request,'userpro.html',{'name':name})
 
 def stocks(request):
      return render(request,'stocks.html')

@@ -1,78 +1,27 @@
-    <script>
-    async function sendMessage() {
-        let inputField = document.getElementById("userInput");
-        let userMessage = inputField.value.trim();
-        if (!userMessage) return;
-    
-        let messageContainer = document.getElementById("messages");
-        messageContainer.innerHTML += `<div class="user-msg">${userMessage}</div>`;
-    
-        let response = await fetch("/chatbot/", {
-            method: "POST",
-            headers: { "Content-Type": "application/json", "X-CSRFToken": getCookie("csrftoken") },
-            body: JSON.stringify({ message: userMessage })
-        });
-    
-        let data = await response.json();
-        messageContainer.innerHTML += `<div class="bot-msg">${data.response}</div>`;
-    
-        inputField.value = "";
-    }
-    
-    // Get CSRF token
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== "") {
-            let cookies = document.cookie.split(";");
-            for (let i = 0; i < cookies.length; i++) {
-                let cookie = cookies[i].trim();
-                if (cookie.startsWith(name + "=")) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
-    </script>
-    
-    <style>
-    #chatbot {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        width: 300px;
-        border: 1px solid #ccc;
-        background: white;
-        padding: 10px;
-        border-radius: 5px;
-    }
-    #chatbox {
-        display: flex;
-        flex-direction: column;
-    }
-    #messages {
-        height: 200px;
-        overflow-y: auto;
-        margin-bottom: 10px;
-    }
-    .user-msg {
-        text-align: right;
-        color: blue;
-    }
-    .bot-msg {
-        text-align: left;
-        color: green;
-    }
-    </style>
-    
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StockSpy</title>
+    <link rel="stylesheet" href="/static/css/stock.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/static/JS/stocks.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
     <!-- Sidebar -->
     {% include 'sidebar.html' %}
+
+    
+
     <!-- Main Content -->
     <div class="main--content">
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async></script>
+
+        <!-- Header Section -->
         <div class="header--wrapper">
             <div class="header--title">
                 <h2>StockSpy</h2>
@@ -86,103 +35,329 @@
             <img src="./image/RG HeadshotPic.jpg" alt="Image by benzoik on Freepik">
         </div>
 
+        <!-- Investment Cards -->
         <div class="card--container">
-            <h3 class="main--title">Today's data</h3>
+            <h3 class="main--title">Today's Data</h3>
             <div class="card--wrapper">
                 <div class="payment--card light--red">
                     <div class="card--header">
                         <div class="amount">
-                            <span class="title">
-                                Total Investment
-                            </span>
-                            <span class="amount--value">{{total}}</span>
+                            <span class="title">Total Investment</span>
+                            <span class="amount--value">{{ total }}</span>
                         </div>
                         <i class="fas fa-rupee-sign"></i>
-
                     </div>
-                    
                 </div>
-
-                
 
                 <div class="payment--card light--green">
                     <div class="card--header">
                         <div class="amount">
-                            <span class="title">
-                                Current Investment
-                            </span>
-                            <span class="amount--value">{{completed_inv}}</span>
+                            <span class="title">Current Investment</span>
+                            <span class="amount--value">{{ completed_inv }}</span>
                         </div>
                         <i class="fas fa-users icon dark--green"></i>
                     </div>
-                    
                 </div>
 
                 <div class="payment--card light--blue">
                     <div class="card--header">
                         <div class="amount">
-                            <span class="title">
-                                sell Stock price
-                            </span>
-                            <span class="amount--value">{{pending_inv}}</span>
+                            <span class="title">Sell Stock Price</span>
+                            <span class="amount--value">{{ pending_inv }}</span>
                         </div>
                         <i class="fa-solid fa-check icon dark--blue"></i>
-                    
+                    </div>
+                </div>
             </div>
         </div>
 
+        <!-- TradingView Widget -->
+    <div class="flex m-4 bg-white rounded-lg shadow-md align-center justify-center">
+        <div class="m-2 ">
+            <div class="tradingview-widget-container">
+                <div id="tradingview-widget"></div>
+            </div>
+
+            <script type="text/javascript">
+                document.addEventListener("DOMContentLoaded", function () {
+                    setTimeout(() => {
+                        new TradingView.widget({
+                            "container_id": "tradingview-widget",
+                            "colorTheme": "light",
+                            "dateRange": "12M",
+                            "exchange": "US",
+                            "showChart": true,
+                            "locale": "en",
+                            "width": "400",
+                            "height": "550"
+                        });
+                    }, 1500);
+                });
+            </script>
+            <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+        </div>
+
+        <div class="m-2">
+            <div class="tradingview-widget-container">
+                <div class="tradingview-widget-container__widget"></div>
+            </div>
+            
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async></script>
+            
+            <script>
+                window.onload = function () {
+                    setTimeout(function () {
+                        new TradingView.widget({
+                            "container_id": "tradingview-widget-container__widget",
+                            "colorTheme": "light",
+                            "dateRange": "12M",
+                            "showChart": true,
+                            "locale": "en",
+                            "largeChartUrl": "",
+                            "isTransparent": false,
+                            "showSymbolLogo": true,
+                            "showFloatingTooltip": false,
+                            "width": "400",
+                            "height": "550",
+                            "plotLineColorGrowing": "rgba(41, 98, 255, 1)",
+                            "plotLineColorFalling": "rgba(41, 98, 255, 1)",
+                            "gridLineColor": "rgba(240, 243, 250, 0)",
+                            "scaleFontColor": "rgba(15, 15, 15, 1)",
+                            "belowLineFillColorGrowing": "rgba(41, 98, 255, 0.12)",
+                            "belowLineFillColorFalling": "rgba(41, 98, 255, 0.12)",
+                            "belowLineFillColorGrowingBottom": "rgba(41, 98, 255, 0)",
+                            "belowLineFillColorFallingBottom": "rgba(41, 98, 255, 0)",
+                            "symbolActiveColor": "rgba(41, 98, 255, 0.12)",
+                            "tabs": [
+                                {
+                                    "title": "Indices",
+                                    "symbols": [
+                                        { "s": "FOREXCOM:SPXUSD", "d": "S&P 500 Index" },
+                                        { "s": "FOREXCOM:NSXUSD", "d": "US 100 Cash CFD" },
+                                        { "s": "FOREXCOM:DJI", "d": "Dow Jones Industrial Average Index" },
+                                        { "s": "INDEX:NKY", "d": "Japan 225" },
+                                        { "s": "INDEX:DEU40", "d": "DAX Index" },
+                                        { "s": "FOREXCOM:UKXGBP", "d": "FTSE 100 Index" }
+                                    ],
+                                    "originalTitle": "Indices"
+                                },
+                                {
+                                    "title": "Futures",
+                                    "symbols": [
+                                        { "s": "CME_MINI:ES1!", "d": "S&P 500" },
+                                        { "s": "CME:6E1!", "d": "Euro" },
+                                        { "s": "COMEX:GC1!", "d": "Gold" },
+                                        { "s": "NYMEX:CL1!", "d": "WTI Crude Oil" },
+                                        { "s": "NYMEX:NG1!", "d": "Gas" },
+                                        { "s": "CBOT:ZC1!", "d": "Corn" }
+                                    ],
+                                    "originalTitle": "Futures"
+                                },
+                                {
+                                    "title": "Bonds",
+                                    "symbols": [
+                                        { "s": "CBOT:ZB1!", "d": "T-Bond" },
+                                        { "s": "CBOT:UB1!", "d": "Ultra T-Bond" },
+                                        { "s": "EUREX:FGBL1!", "d": "Euro Bund" },
+                                        { "s": "EUREX:FBTP1!", "d": "Euro BTP" },
+                                        { "s": "EUREX:FGBM1!", "d": "Euro BOBL" }
+                                    ],
+                                    "originalTitle": "Bonds"
+                                },
+                                {
+                                    "title": "Forex",
+                                    "symbols": [
+                                        { "s": "FX:EURUSD", "d": "EUR to USD" },
+                                        { "s": "FX:GBPUSD", "d": "GBP to USD" },
+                                        { "s": "FX:USDJPY", "d": "USD to JPY" },
+                                        { "s": "FX:USDCHF", "d": "USD to CHF" },
+                                        { "s": "FX:AUDUSD", "d": "AUD to USD" },
+                                        { "s": "FX:USDCAD", "d": "USD to CAD" }
+                                    ],
+                                    "originalTitle": "Forex"
+                                }
+                            ]
+                        });
+                    }, 1000); // Ensuring script loads before execution
+                };
+            </script>
+            
+        </div>
+    </div>
+
+        <div class="m-4 bg-white rounded-lg shadow-md">
+            <div class="m-2">
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget" id="tradingview-ticker-tape"></div>
+                </div>
+
+                <script>
+                    window.addEventListener("load", function () {
+                    setTimeout(function () {
+                        new TradingView.widget({
+                        "container_id": "tradingview-ticker-tape",
+                        "symbols": [
+                            { "proName": "FOREXCOM:SPXUSD", "title": "S&P 500 Index" },
+                            { "proName": "FOREXCOM:NSXUSD", "title": "US 100 Cash CFD" },
+                            { "proName": "FX_IDC:EURUSD", "title": "EUR to USD" },
+                            { "proName": "BITSTAMP:BTCUSD", "title": "Bitcoin" },
+                            { "proName": "BITSTAMP:ETHUSD", "title": "Ethereum" }
+                        ],
+                        "showSymbolLogo": true,
+                        "isTransparent": false,
+                        "displayMode": "adaptive",
+                        "colorTheme": "light",
+                        "locale": "en"
+                        });
+                    }, 1000);
+                    });
+                </script>
+            </div>
+        </div>
+
+        <!-- Transactions Table -->
         <div class="tabular--wrapper">
-            <h3 class="main--title"> transaction details</h3>
+            <h3 class="main--title">Transaction Details</h3>
             <div class="table--container">
                 <table>
                     <thead>
                         <tr>
                             <th>Date</th>
-                            <th>stock Name</th>
-                            <th>Amount per stock</th>
+                            <th>Stock Name</th>
+                            <th>Amount per Stock</th>
                             <th>Quantity</th>
                             <th>Status</th>
-                            <th>Total amount</th>
+                            <th>Total Amount</th>
                         </tr>
                     </thead>
-
                     <tbody>
                         {% if stocktransdata %}
                         {% for i in stocktransdata %}
                         <tr>
-                            <td>{{i.Date}}</td>
-                            <td>{{i.name}}</td>
-                            <td>{{i.amount}}</td>
-                            <td>{{i.quantity}}</td>
-                            <td>on {{i.status}}</td>
-                            <td>{{i.total_amount}}</td>
+                            <td>{{ i.Date }}</td>
+                            <td>{{ i.name }}</td>
+                            <td>{{ i.amount }}</td>
+                            <td>{{ i.quantity }}</td>
+                            <td>{{ i.status }}</td>
+                            <td>{{ i.total_amount }}</td>
                         </tr>
                         {% endfor %}
                         {% else %}
                         <tr>
-                            <td colspan="6">No transaction Done</tdco>
-
+                            <td colspan="6">No transaction Done</td>
                         </tr>
                         {% endif %}
-                        
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="6">Total: {{total}}</td>
+                            <td colspan="6">Total: {{ total }}</td>
                         </tr>
                     </tfoot>
                 </table>
             </div>
         </div>
+
+        <!-- Chatbot -->
+        <!-- <div id="chatbot">
+            <div id="chatbox">
+                <div id="messages"></div>
+                <input type="text" id="userInput" name="userInput" placeholder="Type your message..." />
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div> -->
+
     </div>
+<!-- 
+    <script>
+        async function sendMessage() {
+            let inputField = document.getElementById("userInput");
+            let userMessage = inputField.value.trim();
+            if (!userMessage) return;
 
-    <!-- <div id="chatbot">
-        <div id="chatbox">
-            <div id="messages">{{message}}</div>
-            <input type="text" id="userInput" name="userInput" placeholder="Type your message..." />
-            <button onclick="sendMessage()">Send</button>
-        </div>
-    </div> -->
+            let messageContainer = document.getElementById("messages");
+            messageContainer.innerHTML += `<div class="user-msg">${userMessage}</div>`;
+
+            try {
+                let response = await fetch("/chatbot/", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", "X-CSRFToken": getCookie("csrftoken") },
+                    body: JSON.stringify({ message: userMessage })
+                });
+
+                let data = await response.json();
+                messageContainer.innerHTML += `<div class="bot-msg">${data.response}</div>`;
+            } catch (error) {
+                messageContainer.innerHTML += `<div class="bot-msg error">Error fetching response.</div>`;
+            }
+
+            inputField.value = "";
+        }
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== "") {
+                let cookies = document.cookie.split(";");
+                for (let i = 0; i < cookies.length; i++) {
+                    let cookie = cookies[i].trim();
+                    if (cookie.startsWith(name + "=")) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script> -->
+
+    <!-- <style>
+        #chatbot {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            border: 1px solid #ccc;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #chatbox {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #messages {
+            height: 200px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            padding: 5px;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+
+        .user-msg {
+            text-align: right;
+            color: blue;
+            background: #d3e5ff;
+            padding: 5px;
+            margin: 5px;
+            border-radius: 5px;
+        }
+
+        .bot-msg {
+            text-align: left;
+            color: green;
+            background: #d5f5d5;
+            padding: 5px;
+            margin: 5px;
+            border-radius: 5px;
+        }
+
+        .bot-msg.error {
+            color: red;
+        }
+    </style> -->
+
 </body>
-
 </html>

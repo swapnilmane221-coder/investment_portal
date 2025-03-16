@@ -2,7 +2,7 @@
 from django.contrib import admin
 from django.urls import path
 from . import views
-# from .views import chatbot_response 
+from .views import  get_insurance_data
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -12,7 +12,8 @@ urlpatterns = [
     path("profile/",views.profile,name='profile'),
     path('main/',views.main,name='main'),
     path('login/',views.login,name='login'),
-    # path("chatbot/", chatbot_response, name="chatbot_response"),
     path('userprofile/',views.userprofile,name='userprofile'),
     path('stocks/',views.stocks,name='stocks'),
+    path('insurance/', views.insurance, name='insurance'),
+    path('api/data/', get_insurance_data, name='get_insurance_data'),
 ]

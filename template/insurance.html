@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insurance List</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        
+        .insurance-card {
+            background: white;
+            padding: 20px;
+            margin: 10px;
+            display: inline-block;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        button {
+            padding: 10px;
+            margin: 5px;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        async function fetchInsuranceData() {
+            try {
+                const response = await fetch('https://api.example.com/insurance/list?token=dYkhLKCmzrr1SPSb2dwtUE8AHUDdE4Cr');
+                const data = await response.json();
+                const container = document.getElementById('insurance-container');
+                container.innerHTML = "";
+        
+                const insurances = data; // Assuming API returns an array of insurance policies
+        
+                insurances.forEach((insurance, index) => {
+                    const suggestion = analyzeInsuranceTrend(insurance.priceHistory || { dates: [], prices: [] });
+                    
+                    const card = document.createElement('div');
+                    card.className = "insurance-card";
+                    card.innerHTML = `
+                        <h2>${insurance.name || "Unknown Insurance"}</h2>
+                        <p>Type: ${insurance.type || "N/A"}</p>
+                        <p>Premium: $${insurance.premium || "N/A"} per year</p>
+                        <p>Coverage: $${insurance.coverage || "N/A"}</p>
+                        <p><strong>Suggestion: ${suggestion}</strong></p>
+                        <canvas id="chart-${index}"></canvas>
+                        <div class="buttons">
+                            <button class="buy" onclick="buyInsurance('${insurance.name || "Unknown Insurance"}')">Buy</button>
+                            <button class="details" onclick="alert('Details of ${insurance.name || "Unknown Insurance"}')">Details</button>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                    setTimeout(() => createChart(`chart-${index}, insurance.priceHistory || { dates: [], prices: [] }`), 100);
+                });
+            } catch (error) {
+                console.error("Error fetching insurance data:", error);
+            }
+        }
+        
+        function createChart(canvasId, priceHistory) {
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: priceHistory.dates || [],
+                    datasets: [{
+                        label: 'Premium Trend',
+                        data: priceHistory.prices || [],
+                        borderColor: "green",
+                        fill: false,
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { display: true },
+                        y: { display: true }
+                    }
+                }
+            });
+        }
+        
+        function analyzeInsuranceTrend(priceHistory) {
+            if (!priceHistory.prices || priceHistory.prices.length < 2) {
+                return "No Data Available";
+            }
+            const latest = priceHistory.prices[priceHistory.prices.length - 1];
+            const previous = priceHistory.prices[priceHistory.prices.length - 2];
+            const trend = latest - previous;
+        
+            if (trend < -10) return "Buy - Prices Dropping";
+            if (trend > 10) return "Avoid - Prices Rising";
+            return "Hold - Stable";
+        }
+        
+        function buyInsurance(insuranceName) {
+            alert(`You have successfully bought the insurance: ${insuranceName}`);
+        }
+        
+        fetchInsuranceData();
+    </script>
+</head>
+<body>
+    <h1>Available Insurance Policies</h1>
+    <div id="insurance-container"></div>
+    
+</body>
+</html>
