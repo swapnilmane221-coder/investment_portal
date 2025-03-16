@@ -7,6 +7,75 @@
     <title>Dashboard Design</title>
     <link rel="stylesheet" href="/static/css/profile.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+<script>
+    async function sendMessage() {
+        let inputField = document.getElementById("userInput");
+        let userMessage = inputField.value.trim();
+        if (!userMessage) return;
+    
+        let messageContainer = document.getElementById("messages");
+        messageContainer.innerHTML += `<div class="user-msg">${userMessage}</div>`;
+    
+        let response = await fetch("/chatbot/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "X-CSRFToken": getCookie("csrftoken") },
+            body: JSON.stringify({ message: userMessage })
+        });
+    
+        let data = await response.json();
+        messageContainer.innerHTML += `<div class="bot-msg">${data.response}</div>`;
+    
+        inputField.value = "";
+    }
+    
+    // Get CSRF token
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+            let cookies = document.cookie.split(";");
+            for (let i = 0; i < cookies.length; i++) {
+                let cookie = cookies[i].trim();
+                if (cookie.startsWith(name + "=")) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    </script>
+    
+    <style>
+    #chatbot {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 300px;
+        border: 1px solid #ccc;
+        background: white;
+        padding: 10px;
+        border-radius: 5px;
+    }
+    #chatbox {
+        display: flex;
+        flex-direction: column;
+    }
+    #messages {
+        height: 200px;
+        overflow-y: auto;
+        margin-bottom: 10px;
+    }
+    .user-msg {
+        text-align: right;
+        color: blue;
+    }
+    .bot-msg {
+        text-align: left;
+        color: green;
+    }
+    </style>
+    
 </head>
 
 <body>
@@ -162,6 +231,14 @@
             </div>
         </div>
     </div>
+
+    <!-- <div id="chatbot">
+        <div id="chatbox">
+            <div id="messages">{{message}}</div>
+            <input type="text" id="userInput" name="userInput" placeholder="Type your message..." />
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div> -->
 </body>
 
 </html>

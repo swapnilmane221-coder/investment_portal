@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investment Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="min-h-screen bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-gray-900">Investment Profile</h1>
+            <div class="flex space-x-4">
+                <button class="p-2 text-gray-400 hover:text-gray-500">🔔</button>
+                <button class="p-2 text-gray-400 hover:text-gray-500">⚙</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Profile Section -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-lg shadow p-6 text-center">
+                    <img src="https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&q=80" alt="Profile" class="w-24 h-24 rounded-full mx-auto mb-4">
+                    <h2 class="text-xl font-semibold text-gray-900">Sarah Anderson</h2>
+                    <p class="text-gray-500">Professional Investor</p>
+                    <div class="mt-4 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                        🏆 Pro Trader
+                    </div>
+                    <div class="mt-6 border-t border-gray-200 pt-6 text-left">
+                        <p class="flex justify-between text-gray-500">Member Since <span class="font-medium">Jan 2022</span></p>
+                        <p class="flex justify-between text-gray-500">Total Investments <span class="font-medium">127</span></p>
+                        <p class="flex justify-between text-gray-500">Success Rate <span class="font-medium text-green-600">87%</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="lg:col-span-2 space-y-8">
+                <!-- Portfolio Summary -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Portfolio Summary</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-gray-50 p-4 rounded-lg flex items-center">
+                            <span class="text-blue-600 text-2xl">💰</span>
+                            <div class="ml-4">
+                                <p class="text-sm text-gray-500">Total Value</p>
+                                <p class="text-xl font-semibold">$284,521</p>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg flex items-center">
+                            <span class="text-green-600 text-2xl">📈</span>
+                            <div class="ml-4">
+                                <p class="text-sm text-gray-500">Monthly Return</p>
+                                <p class="text-xl font-semibold text-green-600">+8.2%</p>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg flex items-center">
+                            <span class="text-purple-600 text-2xl">📊</span>
+                            <div class="ml-4">
+                                <p class="text-sm text-gray-500">Asset Split</p>
+                                <p class="text-xl font-semibold">12 Assets</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activities -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Recent Activities</h3>
+                    <div class="space-y-4">
+                        <div class="flex justify-between p-4 bg-gray-50 rounded-lg">
+                            <span class="text-green-600">💵 Buy AAPL</span>
+                            <span>$5,230</span>
+                            <span class="text-green-600">+2.4%</span>
+                        </div>
+                        <div class="flex justify-between p-4 bg-gray-50 rounded-lg">
+                            <span class="text-red-600">💼 Sell TSLA</span>
+                            <span>$3,120</span>
+                            <span class="text-red-600">-1.2%</span>
+                        </div>
+                        <div class="flex justify-between p-4 bg-gray-50 rounded-lg">
+                            <span class="text-green-600">💵 Buy MSFT</span>
+                            <span>$2,850</span>
+                            <span class="text-green-600">+3.1%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

@@ -3,10 +3,31 @@ from django.shortcuts import render
 from userdata.models import userdata
 from django.views.decorators.csrf import csrf_protect
 from stock.models import transactionhistory
+import json
+import torch
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
+# from .chatbot_assistant import ChatbotAssistant, get_stocks  # Import your chatbot class
+
+# # Load chatbot model
+# assistant = ChatbotAssistant('intents.json', function_mappings={'stocks': get_stocks})
+# assistant.parse_intents()
+# assistant.load_model('chatbot_model.pth', 'dimensions.json')
+# from google import genai
 
 
-def base(request):
-     return render(request,'base.html')
+
+# def chatbot_response(request):
+#     if request.method == "POST":
+#         userinput = request.POST.get('userInput')
+#         client = genai.Client(api_key="AIzaSyBfPOZ7vl3kKsIdxM5p89tZpQS6we8vQ6E")
+#         response = client.models.generate_content(
+#         model="gemini-2.0-flash", contents=userinput
+#      )
+#         message = response.text
+#         return render(request, 'profile.html', {'message': message})
+#     return JsonResponse({"error": "Invalid request"}, status=400)
 
 def home(request):
      return render(request,'home.html')
@@ -41,7 +62,18 @@ def main(request):
 def login(request):
      if request.method == 'POST':
           email=request.POST.get('email')
-          user = userdata.objects.filter(email=email)
-          if user[0].password == request.POST.get('password'):
+          msg=''
+          try:
+               user = userdata.objects.filter(email=email)
+               if user[0].password == request.POST.get('password'):
+                    msg=''
+          except:
+               msg='Invalid Credentials'
+          if msg=='':
                return HttpResponseRedirect('/profile')
-     return render(request,'home.html')
+          else:
+               return render(request,'reg.html',{'msg':msg})
+     return render(request,'reg.html')
+
+def userprofile(request):
+     return render(request,'userpro.html')
