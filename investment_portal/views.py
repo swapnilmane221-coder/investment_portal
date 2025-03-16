@@ -3,8 +3,8 @@ from django.shortcuts import render
 from userdata.models import userdata
 from django.views.decorators.csrf import csrf_protect
 from stock.models import transactionhistory
-import json
-import torch
+# import json
+# import torch
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
