@@ -62,11 +62,13 @@ def main(request):
 def login(request):
      if request.method == 'POST':
           email=request.POST.get('email')
-          msg=''
+          msg=None
           try:
                user = userdata.objects.filter(email=email)
                if user[0].password == request.POST.get('password'):
-                    msg=''
+                    msg=None
+               else:
+                    msg='Invalid Credentials'
           except:
                msg='Invalid Credentials'
           if msg=='':

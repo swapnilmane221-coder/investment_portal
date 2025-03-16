@@ -1,14 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Design</title>
-    <link rel="stylesheet" href="/static/css/profile.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-<script>
+    <script>
     async function sendMessage() {
         let inputField = document.getElementById("userInput");
         let userMessage = inputField.value.trim();
@@ -80,53 +70,7 @@
 
 <body>
     <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="logo"></div>
-        <ul class="menu">
-            <li class="active">
-                <a href="#">
-                    <i class="fas fa-tachometer-alt"></i>
-                    <span>Dashboard</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="fas fa-user"></i>
-                    <span>Profile</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="fas fa-chart-bar"></i>
-                    <span>Statistics</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="fas fa-question-circle"></i>
-                    <span>FAQ</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="fas fa-star"></i>
-                    <span>Testimonials</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="fas fa-cog"></i>
-                    <span>Settings</span>
-                </a>
-            </li>
-            <li class="logout">
-                <a href="/home">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Logout</span>
-                </a>
-            </li>
-        </ul>
-    </div>
+    {% include 'sidebar.html' %}
     <!-- Main Content -->
     <div class="main--content">
         <div class="header--wrapper">
