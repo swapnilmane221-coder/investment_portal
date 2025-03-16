@@ -79,3 +79,6 @@ def login(request):
 
 def userprofile(request):
      return render(request,'userpro.html')
+
+def stocks(request):
+     return render(request,'stocks.html')

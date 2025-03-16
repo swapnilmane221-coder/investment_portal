@@ -14,4 +14,5 @@ urlpatterns = [
     path('login/',views.login,name='login'),
     # path("chatbot/", chatbot_response, name="chatbot_response"),
     path('userprofile/',views.userprofile,name='userprofile'),
+    path('stocks/',views.stocks,name='stocks'),
 ]
